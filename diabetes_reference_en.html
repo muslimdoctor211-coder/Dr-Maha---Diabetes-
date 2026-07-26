@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diabetes Mellitus — Complete Reference</title>
+<style>
+  :root{
+    --navy:#0f1f38;
+    --navy2:#16294a;
+    --sage:#7c9885;
+    --sage-bg:#eef3ee;
+    --sage-dark:#4f6b58;
+    --burgundy:#7a2632;
+    --burgundy-bg:#f7ecee;
+    --burgundy-dark:#5c1c25;
+    --gold:#b8860b;
+    --gold-bg:#fbf3e2;
+    --gold-dark:#8a640a;
+    --ink:#1c1c1c;
+    --paper:#fafaf8;
+    --line:#dcdcd6;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:0;
+    font-family:'Segoe UI', Tahoma, Arial, sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.65;
+  }
+  .hero{
+    background:linear-gradient(135deg, var(--navy), var(--navy2));
+    color:#fff;
+    padding:38px 24px 30px;
+    text-align:center;
+    box-shadow:0 4px 18px rgba(0,0,0,.25);
+  }
+  .hero h1{margin:0 0 8px; font-size:1.9rem; letter-spacing:.5px;}
+  .hero p{margin:0; opacity:.85; font-size:.95rem;}
+  .hero .badge{
+    display:inline-block; margin-top:14px; padding:6px 16px;
+    border:1px solid rgba(255,255,255,.35); border-radius:30px;
+    font-size:.8rem; opacity:.9;
+  }
+  .tabs{
+    display:flex; justify-content:center; gap:10px; flex-wrap:wrap;
+    background:var(--navy2); padding:10px; position:sticky; top:0; z-index:50;
+    box-shadow:0 3px 10px rgba(0,0,0,.2);
+  }
+  .tab-btn{
+    background:transparent; border:1px solid rgba(255,255,255,.3); color:#fff;
+    padding:10px 22px; border-radius:8px; cursor:pointer; font-size:.95rem;
+    font-weight:600; transition:.2s;
+  }
+  .tab-btn.active{background:#fff; color:var(--navy2);}
+  .page{display:none; max-width:960px; margin:0 auto; padding:22px 16px 60px;}
+  .page.active{display:block;}
+
+  .section-title{
+    font-size:1.3rem; font-weight:800; margin:28px 0 12px;
+    padding-left:12px; border-left:5px solid var(--navy);
+    color:var(--navy);
+  }
+  .section-title.sage{border-color:var(--sage-dark); color:var(--sage-dark);}
+  .section-title.burgundy{border-color:var(--burgundy); color:var(--burgundy);}
+  .section-title.gold{border-color:var(--gold-dark); color:var(--gold-dark);}
+
+  .card{
+    border-radius:12px; margin-bottom:12px; overflow:hidden;
+    border:1px solid var(--line);
+    box-shadow:0 1px 4px rgba(0,0,0,.06);
+  }
+  .card-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:14px 18px; cursor:pointer; font-weight:700; font-size:1.02rem;
+  }
+  .card-head:after{content:'\25BE'; font-size:1.1rem; transition:.25s;}
+  .card.open .card-head:after{transform:rotate(180deg);}
+  .card-body{
+    max-height:0; overflow:hidden; transition:max-height .3s ease;
+    background:#fff; padding:0 18px;
+  }
+  .card.open .card-body{padding:6px 18px 18px;}
+
+  .card.sage .card-head{background:var(--sage-bg); color:var(--sage-dark); border-bottom:3px solid var(--sage);}
+  .card.burgundy .card-head{background:var(--burgundy-bg); color:var(--burgundy-dark); border-bottom:3px solid var(--burgundy);}
+  .card.gold .card-head{background:var(--gold-bg); color:var(--gold-dark); border-bottom:3px solid var(--gold);}
+
+  table{width:100%; border-collapse:collapse; margin:10px 0; font-size:.92rem;}
+  th,td{border:1px solid var(--line); padding:8px 10px; text-align:left;}
+  th{background:#f0f0ec; font-weight:700;}
+  tr:nth-child(even) td{background:#fafaf9;}
+
+  .pill{
+    display:inline-block; padding:3px 10px; border-radius:14px;
+    font-size:.78rem; font-weight:700; margin:2px 3px;
+  }
+  .pill.green{background:#e3f3e6; color:#1f6d38;}
+  .pill.orange{background:#fdece0; color:#a54b0b;}
+  .pill.red{background:#fbe3e6; color:#a11d2d;}
+  .pill.blue{background:#e2eef8; color:#1a5488;}
+
+  .note{
+    background:#fff8e6; border-left:4px solid var(--gold); padding:10px 14px;
+    border-radius:6px; margin:10px 0; font-size:.9rem;
+  }
+  .flag{
+    background:#fdeceb; border-left:4px solid var(--burgundy); padding:10px 14px;
+    border-radius:6px; margin:10px 0; font-size:.9rem; font-weight:600;
+  }
+  ul{margin:6px 0; padding-left:22px;}
+  li{margin-bottom:4px;}
+
+  /* Explanation page (narrative) */
+  .lecture h2{
+    color:var(--navy2); font-size:1.35rem; margin:32px 0 10px;
+    border-bottom:2px solid var(--line); padding-bottom:6px;
+  }
+  .lecture h3{color:var(--burgundy-dark); font-size:1.05rem; margin:18px 0 6px;}
+  .lecture p{margin:8px 0;}
+  .lecture .intro{
+    background:var(--sage-bg); border-radius:10px; padding:16px 18px;
+    margin-bottom:18px; font-size:.95rem;
+  }
+
+  /* MCQ styles */
+  .quiz-controls{
+    display:flex; justify-content:center; gap:12px; margin:14px 0 24px;
+  }
+  .quiz-controls button{
+    background:var(--navy); color:#fff; border:none; padding:9px 18px;
+    border-radius:8px; cursor:pointer; font-size:.9rem; font-weight:600;
+  }
+  .quiz-controls button.secondary{background:#fff; color:var(--navy); border:1px solid var(--navy);}
+  .score-box{
+    text-align:center; font-weight:800; font-size:1.05rem; margin-bottom:14px;
+    color:var(--navy2);
+  }
+  .q-card{
+    background:#fff; border:1px solid var(--line); border-radius:12px;
+    padding:16px 18px; margin-bottom:14px; box-shadow:0 1px 4px rgba(0,0,0,.05);
+  }
+  .q-num{font-size:.78rem; font-weight:700; color:#888; margin-bottom:4px;}
+  .q-text{font-weight:700; margin-bottom:10px; font-size:1rem;}
+  .choice{
+    display:block; width:100%; text-align:left; background:#f7f7f5;
+    border:1px solid var(--line); border-radius:8px; padding:10px 14px;
+    margin-bottom:8px; cursor:pointer; font-size:.92rem; transition:.15s;
+  }
+  .choice:hover{background:#eef0ee;}
+  .choice.correct{background:#e3f3e6; border-color:#4f9a63; font-weight:700;}
+  .choice.wrong{background:#fbe3e6; border-color:#c0505d; font-weight:700;}
+  .choice.disabled{cursor:default; pointer-events:none;}
+  .explain{
+    display:none; margin-top:10px; padding:10px 14px; background:var(--sage-bg);
+    border-left:4px solid var(--sage); border-radius:6px; font-size:.88rem;
+  }
+  .explain.show{display:block;}
+
+  .footer-note{text-align:center; color:#888; font-size:.8rem; margin-top:30px;}
+
+  @media print{
+    .tabs{display:none;}
+    .card-body{max-height:none !important; padding:6px 18px 18px !important;}
+    .page{display:block !important;}
+    body{background:#fff;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🩺 Diabetes Mellitus — Complete Reference</h1>
+  <p>Classification • Diagnosis • Management • Comorbidities</p>
+  <span class="badge">Based on ADA Standards of Care 2023–2024</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showPage('explain')">📖 Full Explanation</button>
+  <button class="tab-btn" onclick="showPage('ref')">📋 Reference Cards</button>
+  <button class="tab-btn" onclick="showPage('quiz')">✅ MCQ Quiz (OSCE-style)</button>
+</div>
+
+<!-- ============ PAGE 0: FULL EXPLANATION ============ -->
+<div id="explain" class="page active lecture">
+
+  <div class="intro">
+    This is a full narrative walkthrough of the source lecture <b>"Classification, Diagnosis and Management of Diabetes"</b> (Dr. Maha Youssef Rakha), built mainly on the <b>ADA Standards of Care in Diabetes 2023–2024</b>. Read it top to bottom for understanding, or jump to the Reference Cards tab for quick recall, or the MCQ tab to test yourself.
+  </div>
+
+  <h2>1. Introduction and Definition</h2>
+  <p>Diabetes Mellitus is <b>not a single disease entity</b> but a group of metabolic disorders sharing the common feature of <b>hyperglycemia</b>, resulting from defects in insulin secretion, insulin action, or — most commonly — both.</p>
+  <p><b>Key epidemiologic fact:</b> in 2021, almost <b>44.7% (239.7 million)</b> of adults living with diabetes were unaware they had it. Early diagnosis is essential to prevent or delay complications, avoid premature death, and improve quality of life.</p>
+
+  <h2>2. Classification</h2>
+  <p>Diabetes is classified into four general categories:</p>
+  <ol>
+    <li><b>Type 1 diabetes</b> — autoimmune β-cell destruction, usually leading to absolute insulin deficiency (includes Latent Autoimmune Diabetes of Adulthood, LADA)</li>
+    <li><b>Type 2 diabetes</b> — non-autoimmune, progressive loss of adequate β-cell insulin secretion, frequently on a background of insulin resistance and metabolic syndrome</li>
+    <li><b>Specific types due to other causes</b> — monogenic diabetes syndromes (neonatal diabetes, MODY), diseases of the exocrine pancreas (cystic fibrosis, pancreatitis), drug- or chemical-induced diabetes (glucocorticoids, HIV/AIDS treatment, post-transplant)</li>
+    <li><b>Gestational diabetes mellitus (GDM)</b> — diagnosed in the second or third trimester, not clearly overt diabetes before gestation</li>
+  </ol>
+
+  <h3>Important teaching point</h3>
+  <p>Type 1 and Type 2 diabetes are heterogeneous diseases whose clinical presentation and progression vary considerably. Classification matters for choosing therapy, but some patients cannot be clearly classified at diagnosis. <b>The old paradigm — "Type 2 occurs only in adults, Type 1 only in children" — is no longer accurate: both diseases occur across all age groups.</b></p>
+
+  <h3>Type 1 vs Type 2 — comparison</h3>
+  <table>
+    <tr><th></th><th>Type 1</th><th>Type 2</th></tr>
+    <tr><td>Onset</td><td>Acute, symptomatic</td><td>Slow, often asymptomatic</td></tr>
+    <tr><td>Clinical picture</td><td>Weight loss, polyuria, polydipsia</td><td>Obesity, strong family history, high-prevalence ethnicity, acanthosis nigricans, PCOS</td></tr>
+    <tr><td>Ketosis</td><td>Almost always present</td><td>Usually absent</td></tr>
+    <tr><td>C-peptide</td><td>Negative</td><td>Positive</td></tr>
+    <tr><td>Antibodies (ICA, Anti-GAD, ICA512)</td><td>Positive</td><td>Negative</td></tr>
+    <tr><td>Therapy</td><td>Insulin invariably</td><td>Oral hypoglycemic agents</td></tr>
+    <tr><td>Associated autoimmune diseases</td><td>Yes</td><td>No</td></tr>
+  </table>
+
+  <h3>Stages of Type 1 Diabetes</h3>
+  <table>
+    <tr><th></th><th>Stage 1</th><th>Stage 2</th><th>Stage 3</th></tr>
+    <tr><td>Characteristics</td><td>Autoimmunity, normoglycemia, presymptomatic</td><td>Autoimmunity, dysglycemia, presymptomatic</td><td>Autoimmunity, overt hyperglycemia, symptomatic</td></tr>
+    <tr><td>Diagnostic criteria</td><td>Multiple islet autoantibodies, no IGT or IFG</td><td>Islet autoantibodies + dysglycemia: FPG 100–125 mg/dL and/or 2-h PG 140–199 mg/dL and/or A1C 5.7–6.4%</td><td>Antibodies may become absent; diabetes by standard criteria</td></tr>
+  </table>
+  <p><b>Teplizumab</b> (a humanized anti-CD3 monoclonal antibody) has been approved to delay the onset of Stage 3 in people 8 years and older who are in Stage 2.</p>
+
+  <h3>MODY (Maturity-Onset Diabetes of the Young)</h3>
+  <ul>
+    <li>Frequently characterized by onset of hyperglycemia at an early age (classically before 25 years)</li>
+    <li>Impaired insulin secretion with minimal or no defect in insulin action (in the absence of obesity)</li>
+    <li>Inherited in an <b>autosomal dominant</b> pattern, with abnormalities in at least 13 genes identified to date</li>
+  </ul>
+
+  <h2>3. Diagnosis</h2>
+  <h3>Classic symptoms of hyperglycemia</h3>
+  <p>Polyuria, polydipsia, weight loss. <b>Polyphagia is no longer considered a classic symptom</b> — a frequently tested update.</p>
+
+  <h3>Diagnostic criteria (Table 2.2)</h3>
+  <table>
+    <tr><th>Test</th><th>Diagnostic value</th></tr>
+    <tr><td>FPG (fasting plasma glucose)</td><td>≥126 mg/dL (7.0 mmol/L); fasting = no caloric intake for at least 8 h</td></tr>
+    <tr><td>2-h PG during OGTT</td><td>≥200 mg/dL (11.1 mmol/L) using a 75-g anhydrous glucose load</td></tr>
+    <tr><td>A1C</td><td>≥6.5% (48 mmol/mol) — measured in an NGSP-certified lab, standardized to the DCCT assay</td></tr>
+    <tr><td>Classic symptoms/hyperglycemic crisis + random plasma glucose</td><td>≥200 mg/dL (11.1 mmol/L)</td></tr>
+  </table>
+  <p>In the absence of unequivocal hyperglycemia, diagnosis requires <b>two abnormal results</b> — from the same sample or in two separate samples.</p>
+
+  <h3>Prediabetes criteria</h3>
+  <table>
+    <tr><th>Test</th><th>Prediabetes</th><th>Diabetes</th></tr>
+    <tr><td>A1C</td><td>5.7–6.4% (39–47 mmol/mol)</td><td>≥6.5%</td></tr>
+    <tr><td>FPG</td><td>100–125 mg/dL (5.6–6.9 mmol/L)</td><td>≥126 mg/dL</td></tr>
+    <tr><td>2-h PG (OGTT)</td><td>140–199 mg/dL (7.8–11.0 mmol/L)</td><td>≥200 mg/dL</td></tr>
+  </table>
+
+  <h3>Standardized diagnostic testing algorithm</h3>
+  <ul>
+    <li><b>Classic symptoms/hyperglycemic crisis</b> present + random glucose ≥200 → <b>diagnosis confirmed immediately</b>, no repeat testing needed</li>
+    <li><b>No symptoms present</b> — testing should follow a structured approach to reduce the chance of missing (or over-diagnosing) diabetes:
+      <ul>
+        <li>Two different tests both above threshold → diagnosis confirmed</li>
+        <li>Two different tests discordant → repeat the test that was above threshold, for confirmation</li>
+        <li>Only one test available and above threshold → repeat the same test without delay</li>
+        <li>Result not diagnostic → retest at 3-year intervals (more frequently if risk warrants — e.g., annually for prediabetes)</li>
+      </ul>
+    </li>
+  </ul>
+  <div class="note">
+    <b>ADA 2024 updates:</b><br>
+    • Rec 2.1a (new): emphasize the structured approach to diagnostic testing<br>
+    • Rec 2.1b (updated): importance of confirmatory testing when an abnormal result is identified<br>
+    • Rec 2.8 (new): consider standardized islet autoantibody testing for classification of diabetes in adults who phenotypically overlap with Type 1
+  </div>
+
+  <h3>Who to screen for prediabetes and diabetes (Table 2.3)</h3>
+  <p>Screening in asymptomatic adults should be considered when:</p>
+  <ol>
+    <li>Overweight or obesity (BMI ≥25 kg/m², or ≥23 kg/m² in Asian Americans) <b>plus</b> one or more risk factors:
+      <ul>
+        <li>First-degree relative with diabetes</li>
+        <li>High-risk race/ethnicity (African American, Latino, Native American, Asian American, Pacific Islander)</li>
+        <li>History of cardiovascular disease</li>
+        <li>Hypertension (≥130/80 mmHg or on therapy)</li>
+        <li>HDL &lt;35 mg/dL and/or triglycerides &gt;250 mg/dL</li>
+        <li>Polycystic ovary syndrome</li>
+        <li>Physical inactivity</li>
+        <li>Other conditions associated with insulin resistance (severe obesity, acanthosis nigricans)</li>
+      </ul>
+    </li>
+    <li>People with prediabetes (A1C ≥5.7%, IGT, or IFG) → test <b>yearly</b></li>
+    <li>People with a history of GDM → lifelong testing at least every <b>3 years</b></li>
+    <li>For everyone else → testing begins at <b>age 35</b></li>
+    <li>If results are normal → repeat at a minimum of 3-year intervals</li>
+    <li>People with HIV should also be screened</li>
+  </ol>
+
+  <h2>4. Prevention of Diabetes</h2>
+  <ul>
+    <li><b>3.1 (updated):</b> monitor for development of type 2 diabetes in prediabetes at least annually</li>
+    <li><b>3.9:</b> statins may increase the risk of type 2 diabetes in high-risk individuals; <b>it is not recommended to discontinue statins</b> — instead monitor glucose regularly</li>
+    <li><b>3.10:</b> in people with prior stroke, insulin resistance, and prediabetes, <b>pioglitazone</b> may be considered to lower the risk of stroke or MI (based on <b>IRIS trial</b> data), balanced against increased risk of weight gain, edema, and fracture</li>
+    <li><b>Teplizumab</b> — see Stage 2/3 T1DM section above</li>
+  </ul>
+
+  <h2>5. Management</h2>
+  <h3>Initial and follow-up visits</h3>
+  <p>A complete medical evaluation at the initial visit should: confirm diagnosis and classify diabetes; evaluate for complications, comorbidities, and overall health status; identify care partners and support systems; assess social determinants of health and structural barriers; review previous treatment and risk-factor management; engage the patient in a shared care management plan; and develop a plan for continuing care.</p>
+
+  <h3>Exercise plan</h3>
+  <ul>
+    <li>≥150 minutes/week of moderate-to-vigorous activity, spread over at least 3 days/week</li>
+    <li>No more than 2 consecutive days without activity</li>
+    <li>Resistance training 2–3 sessions/week on non-consecutive days</li>
+    <li>Flexibility and balance training 2–3 times/week, recommended for older adults with diabetes</li>
+  </ul>
+
+  <h3>Medical Nutrition Therapy (MNT)</h3>
+  <p>An individualized eating plan is recommended, developed collaboratively with the patient — there is no single "ideal" macronutrient distribution that suits everyone with diabetes.</p>
+
+  <h3>Obesity management (by BMI)</h3>
+  <table>
+    <tr><th>BMI (kg/m²)</th><th>Category</th><th>Recommended approach</th></tr>
+    <tr><td>25.0–29.9</td><td>Overweight</td><td>Lifestyle ± medication</td></tr>
+    <tr><td>30.0–34.9</td><td>Obesity Class I</td><td>Lifestyle + medication</td></tr>
+    <tr><td>35.0–39.9</td><td>Obesity Class II</td><td>Lifestyle + medication + consider metabolic surgery</td></tr>
+    <tr><td>≥40</td><td>Obesity Class III</td><td>All three, with a strong preference for metabolic surgery</td></tr>
+  </table>
+  <p><b>Rec 8.6 (ADA 2024):</b> the approach to treating obesity should be individualized; any of the established approaches (intensive behavioral interventions, pharmacologic treatment, or metabolic surgery) can be considered alone or in combination.</p>
+
+  <h3>Efficacy of weight-loss medications</h3>
+  <table>
+    <tr><th>Efficacy</th><th>Agents</th></tr>
+    <tr><td>Very High</td><td>Semaglutide, Tirzepatide</td></tr>
+    <tr><td>High</td><td>Dulaglutide, Liraglutide</td></tr>
+    <tr><td>Intermediate</td><td>Other GLP-1 RAs, SGLT2 inhibitors</td></tr>
+    <tr><td>Neutral</td><td>DPP-4 inhibitors, Metformin</td></tr>
+  </table>
+
+  <h3>Pharmacologic approach to glycemic treatment (Figure 9.3, condensed)</h3>
+  <p><b>Metformin</b> plus comprehensive lifestyle change is the usual first-line approach. The next step depends on the clinical picture — <b>independent of A1C</b>:</p>
+  <table>
+    <tr><th>Clinical situation</th><th>Preferred agent</th></tr>
+    <tr><td>Established ASCVD or indicators of high risk</td><td>GLP-1 RA or SGLT2i with proven cardiovascular benefit</td></tr>
+    <tr><td>Heart failure (HF)</td><td>SGLT2i with proven HF benefit</td></tr>
+    <tr><td>Chronic kidney disease (CKD)</td><td>SGLT2i (or GLP-1 RA if not appropriate)</td></tr>
+    <tr><td>Need to minimize hypoglycemia</td><td>DPP-4i, GLP-1 RA, SGLT2i, TZD</td></tr>
+    <tr><td>Need to promote weight loss</td><td>GLP-1 RA and SGLT2i (dual GIP/GLP-1 agents preferred for greatest effect)</td></tr>
+    <tr><td>Cost is a major issue</td><td>Sulfonylurea or TZD</td></tr>
+  </table>
+  <p><b>If injectable therapy is needed to lower A1C:</b> consider a GLP-1 RA or dual GIP/GLP-1 RA before insulin in most individuals. If still above target, add <b>basal insulin</b>, titrated by fasting glucose. If further control is needed, add <b>prandial insulin</b> stepwise, progressing to a full basal-bolus regimen if required.</p>
+  <div class="note">
+    <b>Key ADA 2024 updates:</b><br>
+    • Rec 9.2: preference for insulin analogs or inhaled insulin over injectable human insulins to minimize hypoglycemia risk in most adults with Type 1<br>
+    • Rec 9.14: importance of early combination therapy in Type 2<br>
+    • Rec 9.15: pharmacologic therapy should address both glycemic and weight goals<br>
+    • Rec 9.18: prioritize agents that also reduce cardiovascular/kidney risk when ASCVD/HF/CKD is established or high-risk<br>
+    • Rec 9.22: insulin therapy can be considered at any stage regardless of other agents, in certain circumstances<br>
+    • Rec 9.23: dual GIP/GLP-1 receptor agonists as an additional option, preferred to insulin<br>
+    • Rec 9.24: reassess insulin dosing upon addition or dose escalation of a GLP-1 RA or dual GIP/GLP-1 RA
+  </div>
+
+  <h2>6. Comorbidities in Diabetes</h2>
+
+  <h3>Hypertension</h3>
+  <p>Target on-treatment blood pressure: <b>less than 130/80 mmHg</b>, if safely attainable.</p>
+  <p><b>Rec 10.6:</b> for blood pressure &gt;120/80 mmHg, lifestyle intervention includes weight loss when indicated, a DASH-style eating pattern (reduce sodium, increase potassium), moderation of alcohol, smoking cessation, and increased physical activity.</p>
+
+  <h3>Lipid management — primary prevention</h3>
+  <table>
+    <tr><th>Age</th><th>CV risk factors</th><th>Recommendation</th><th>LDL goal</th></tr>
+    <tr><td>40–75</td><td>None</td><td>Moderate-intensity statin</td><td>&lt;100 mg/dL</td></tr>
+    <tr><td>40–75</td><td>1 or more</td><td>High-intensity statin</td><td>&lt;70, or reduce LDL 50% from baseline</td></tr>
+    <tr><td>20–39</td><td>Plus risk factors</td><td>Reasonable to initiate a statin</td><td>—</td></tr>
+    <tr><td>&gt;75</td><td>None</td><td>Reasonable to initiate moderate-intensity statin</td><td>—</td></tr>
+    <tr><td>&gt;75</td><td>Plus risk factors</td><td>Continue statin therapy</td><td>—</td></tr>
+  </table>
+
+  <h3>Lipid management — secondary prevention</h3>
+  <ul>
+    <li>For all ages with diabetes and established ASCVD → <b>high-intensity statin</b> added to lifestyle therapy</li>
+    <li><b>Target LDL &lt;55 mg/dL</b> — if not achieved, add <b>ezetimibe</b> or a <b>PCSK9 inhibitor</b> (alirocumab, evolocumab)</li>
+    <li>ASCVD or risk factors on a statin with controlled LDL but elevated triglycerides (135–499) → consider <b>icosapent ethyl</b></li>
+  </ul>
+
+  <h3>Aspirin and reducing cardiovascular risk</h3>
+  <ul>
+    <li><b>Secondary prevention:</b> aspirin for all patients with established ASCVD</li>
+    <li><b>Primary prevention:</b> may be considered in those &gt;50 years with one or more major risk factors (hypertension, dyslipidemia, smoking, family history, albuminuria)</li>
+  </ul>
+  <p>Pillars of cardiovascular risk reduction: control of hypertension, achieving lipid goals, aspirin use (as indicated), avoidance of smoking, and choosing a glucose-lowering agent with CV risk reduction.</p>
+
+  <h3>CKD and risk management</h3>
+  <ul>
+    <li><b>ACEI/ARB:</b> recommended in moderately increased albuminuria (30–299 mg/g cr), strongly recommended in severely increased albuminuria (&gt;300 mg/g cr) and/or eGFR &lt;60</li>
+    <li><b>SGLT2 inhibitors:</b> recommended in all patients with DKD to reduce CKD progression and CV events, for eGFR &gt;20 mL/min/1.73m² and urinary albumin &gt;200 mg/g cr; continue until dialysis or transplantation</li>
+    <li><b>Finerenone:</b> used if eGFR &gt;25 mL/min/1.73m² and K+ &lt;5 mEq/L, with regular eGFR/K+ monitoring (check the exact dose/frequency against the current ADA source — the original slide text was ambiguous)</li>
+  </ul>
+
+  <h3>Neuropathy</h3>
+  <p><b>Rec 12.20:</b> recommended first-line pharmacologic treatments for diabetic neuropathic pain:</p>
+  <ul>
+    <li><b>Gabapentinoids</b></li>
+    <li><b>SNRIs:</b> duloxetine, venlafaxine</li>
+    <li><b>TCAs:</b> amitriptyline</li>
+    <li><b>Sodium channel blockers:</b> lamotrigine, lacosamide, oxcarbazepine, valproic acid</li>
+    <li><b>Capsaicin</b> 8% patch (FDA approved)</li>
+  </ul>
+  <div class="flag">⚠️ Carbamazepine is <b>not approved</b> for diabetic neuropathic pain, despite being a sodium channel blocker — a frequently tested distinction.</div>
+  <p>Refer to a neurologist or pain specialist if pain control is not achieved within the treating physician's scope of practice.</p>
+
+  <h3>NAFLD / NASH</h3>
+  <ul>
+    <li>Hepatic fat infiltration &gt;5% = NAFLD</li>
+    <li><b>NASH:</b> steatosis with inflammation and hepatocyte injury, with or without fibrosis</li>
+  </ul>
+  <p><b>Assessment:</b> <b>FIB-4 score</b> (age, AST/SGOT, ALT/SGPT, platelet count) and <b>fibroelastography</b> (FibroScan).</p>
+
+  <h2>7. Special Populations</h2>
+  <p><b>Diabetes and the elderly:</b> individualization of treatment goals and medication plans based on functional status, comorbidities, and life expectancy.</p>
+  <p><b>Diabetes and pregnancy:</b> preconception counseling, glycemic targets, and management of gestational diabetes — with special attention to safe medication choices (e.g., avoiding ACE inhibitors/ARBs and statins in women trying to conceive or not using reliable contraception).</p>
+
+  <h2>🎯 High-Yield Exam Points — Summary</h2>
+  <ol>
+    <li>Polyphagia is <b>no longer</b> a classic symptom</li>
+    <li>Diagnosis without symptoms requires <b>two positive results</b></li>
+    <li>Statins are <b>not</b> stopped despite raising T2DM risk</li>
+    <li>Carbamazepine is <b>not</b> approved for diabetic neuropathic pain (unlike other sodium channel blockers)</li>
+    <li>SGLT2i and GLP-1 RA are given regardless of A1C when ASCVD/HF/CKD is present</li>
+    <li>Secondary-prevention LDL goal = <b>&lt;55 mg/dL</b></li>
+    <li>Blood pressure goal = <b>&lt;130/80</b></li>
+    <li>FIB-4 is used to assess NAFLD/NASH severity</li>
+  </ol>
+
+</div>
+
+<!-- ============ PAGE 1: REFERENCE CARDS ============ -->
+<div id="ref" class="page">
+
+  <div class="section-title sage">Classification</div>
+
+  <div class="card sage" onclick="toggleCard(this)">
+    <div class="card-head">The four main categories of diabetes</div>
+    <div class="card-body">
+      <ul>
+        <li><b>Type 1:</b> autoimmune β-cell destruction → absolute insulin deficiency (includes LADA)</li>
+        <li><b>Type 2:</b> progressive, non-autoimmune loss of adequate insulin secretion, often with insulin resistance and metabolic syndrome</li>
+        <li><b>Specific types:</b> MODY, neonatal diabetes, exocrine pancreatic disease (cystic fibrosis, pancreatitis), drug-induced (glucocorticoids, HIV therapy, post-transplant)</li>
+        <li><b>Gestational diabetes (GDM):</b> diagnosed in 2nd/3rd trimester, no overt diabetes before pregnancy</li>
+      </ul>
+      <div class="flag">⚠️ "Type 2 only in adults, Type 1 only in children" is outdated — both occur at any age.</div>
+    </div>
+  </div>
+
+  <div class="card sage" onclick="toggleCard(this)">
+    <div class="card-head">Comparison table: Type 1 vs Type 2</div>
+    <div class="card-body">
+      <table>
+        <tr><th></th><th>Type 1</th><th>Type 2</th></tr>
+        <tr><td><b>Onset</b></td><td>Acute, symptomatic</td><td>Slow, often asymptomatic</td></tr>
+        <tr><td><b>Clinical picture</b></td><td>Weight loss, polyuria, polydipsia</td><td>Obesity, strong family history, high-risk ethnicity, acanthosis nigricans, PCOS</td></tr>
+        <tr><td><b>Ketosis</b></td><td>Almost always present</td><td>Usually absent</td></tr>
+        <tr><td><b>C-peptide</b></td><td>Negative</td><td>Positive</td></tr>
+        <tr><td><b>Antibodies (ICA, Anti-GAD, ICA512)</b></td><td>Positive</td><td>Negative</td></tr>
+        <tr><td><b>Therapy</b></td><td>Insulin invariably</td><td>Oral hypoglycemic agents</td></tr>
+        <tr><td><b>Associated autoimmune disease</b></td><td>Yes</td><td>No</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card sage" onclick="toggleCard(this)">
+    <div class="card-head">Staging of Type 1 Diabetes</div>
+    <div class="card-body">
+      <table>
+        <tr><th></th><th>Stage 1</th><th>Stage 2</th><th>Stage 3</th></tr>
+        <tr><td><b>Characteristics</b></td><td>Autoimmunity, normoglycemia, presymptomatic</td><td>Autoimmunity, dysglycemia, presymptomatic</td><td>Autoimmunity, overt hyperglycemia, symptomatic</td></tr>
+        <tr><td><b>Diagnostic criteria</b></td><td>Multiple islet autoantibodies, no IGT/IFG</td><td>Autoantibodies + FPG 100-125 and/or 2h-PG 140-199 and/or A1C 5.7-6.4%</td><td>Antibodies may become absent; diabetes by standard criteria</td></tr>
+      </table>
+      <div class="note">💊 <b>Teplizumab</b> (anti-CD3 monoclonal antibody) delays onset of Stage 3 in people ≥8 years old who are in Stage 2.</div>
+    </div>
+  </div>
+
+  <div class="card sage" onclick="toggleCard(this)">
+    <div class="card-head">MODY (Maturity-Onset Diabetes of the Young)</div>
+    <div class="card-body">
+      <ul>
+        <li>Early onset (classically <b>before age 25</b>)</li>
+        <li>Impaired insulin secretion with <b>minimal or no</b> defect in insulin action (without obesity)</li>
+        <li><b>Autosomal dominant</b> inheritance, ≥13 known genes</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-title burgundy">Diagnosis</div>
+
+  <div class="card burgundy" onclick="toggleCard(this)">
+    <div class="card-head">Classic symptoms of hyperglycemia</div>
+    <div class="card-body">
+      <span class="pill blue">Polyuria</span>
+      <span class="pill blue">Polydipsia</span>
+      <span class="pill blue">Weight loss</span>
+      <div class="flag">⚠️ Polyphagia is no longer considered a classic symptom (a frequently tested update).</div>
+    </div>
+  </div>
+
+  <div class="card burgundy" onclick="toggleCard(this)">
+    <div class="card-head">📋 Diagnostic criteria (Table 2.2) — the key table</div>
+    <div class="card-body">
+      <table>
+        <tr><th>Test</th><th>Diagnostic value</th></tr>
+        <tr><td>FPG</td><td>≥126 mg/dL (7.0 mmol/L); fasting = no caloric intake ≥8 h</td></tr>
+        <tr><td>2-h PG during OGTT</td><td>≥200 mg/dL (11.1 mmol/L) with 75-g glucose load</td></tr>
+        <tr><td>A1C</td><td>≥6.5% (48 mmol/mol) — NGSP-certified lab, DCCT-standardized</td></tr>
+        <tr><td>Random glucose + classic symptoms/hyperglycemic crisis</td><td>≥200 mg/dL (11.1 mmol/L)</td></tr>
+      </table>
+      <div class="note">📌 Without unequivocal hyperglycemia, diagnosis requires <b>two abnormal results</b> (same sample or two separate samples).</div>
+    </div>
+  </div>
+
+  <div class="card burgundy" onclick="toggleCard(this)">
+    <div class="card-head">Prediabetes criteria</div>
+    <div class="card-body">
+      <table>
+        <tr><th>Test</th><th>Prediabetes</th><th>Diabetes</th></tr>
+        <tr><td>A1C</td><td>5.7–6.4% (39–47 mmol/mol)</td><td>≥6.5%</td></tr>
+        <tr><td>FPG</td><td>100–125 mg/dL (5.6–6.9 mmol/L)</td><td>≥126 mg/dL</td></tr>
+        <tr><td>2-h PG (OGTT)</td><td>140–199 mg/dL (7.8–11.0 mmol/L)</td><td>≥200 mg/dL</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card burgundy" onclick="toggleCard(this)">
+    <div class="card-head">🔄 Standardized diagnostic algorithm</div>
+    <div class="card-body">
+      <ul>
+        <li><b>Classic symptoms/hyperglycemic crisis</b> + random glucose ≥200 → <b>diagnosis confirmed immediately</b> (no repeat needed)</li>
+        <li><b>No symptoms</b> (structured approach needed to avoid diagnostic error):
+          <ul>
+            <li>Two different tests, both above threshold → diagnosis confirmed</li>
+            <li>Two discordant tests → repeat the one above threshold, for confirmation</li>
+            <li>Only one test available, above threshold → repeat the same test without delay</li>
+            <li>Non-diagnostic result → retest every 3 years (sooner if risk increases)</li>
+          </ul>
+        </li>
+      </ul>
+      <div class="note">ADA 2024 updates: Rec 2.1a (structured approach), Rec 2.1b (importance of confirmatory testing), Rec 2.8 (standardized islet autoantibody testing for overlapping T1 phenotypes).</div>
+    </div>
+  </div>
+
+  <div class="card burgundy" onclick="toggleCard(this)">
+    <div class="card-head">📋 Who to screen (Screening Criteria)</div>
+    <div class="card-body">
+      <ul>
+        <li>Overweight/obesity (BMI ≥25, or ≥23 in Asian Americans) + at least one risk factor:
+          <ul>
+            <li>First-degree relative with diabetes</li>
+            <li>High-risk ethnicity (African American, Latino, Native American, Asian American, Pacific Islander)</li>
+            <li>History of cardiovascular disease</li>
+            <li>Hypertension (≥130/80 or on therapy)</li>
+            <li>HDL &lt;35 and/or triglycerides &gt;250</li>
+            <li>Polycystic ovary syndrome</li>
+            <li>Physical inactivity</li>
+            <li>Conditions associated with insulin resistance (severe obesity, acanthosis nigricans)</li>
+          </ul>
+        </li>
+        <li>Prediabetes → screen <b>yearly</b></li>
+        <li>History of GDM → <b>lifelong, at least every 3 years</b></li>
+        <li>Everyone else → begin screening at <b>age 35</b></li>
+        <li>Normal result → repeat at least every 3 years</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-title gold">Prevention</div>
+
+  <div class="card gold" onclick="toggleCard(this)">
+    <div class="card-head">Recommendations for T2DM prevention</div>
+    <div class="card-body">
+      <ul>
+        <li><b>3.1:</b> monitor for progression to T2DM in prediabetes at least annually</li>
+        <li><b>3.9:</b> statins may raise T2DM risk but <b>should not be discontinued</b> — monitor glucose regularly</li>
+        <li><b>3.10:</b> stroke + insulin resistance + prediabetes → <b>pioglitazone</b> may lower risk of stroke/MI (IRIS trial), balanced against weight gain/edema/fracture risk</li>
+      </ul>
+      <div class="note">💊 <b>Teplizumab</b>: delays onset of Stage 3 T1DM (see "Staging" card above).</div>
+    </div>
+  </div>
+
+  <div class="section-title burgundy">Management</div>
+
+  <div class="card burgundy" onclick="toggleCard(this)">
+    <div class="card-head">Initial evaluation and follow-up</div>
+    <div class="card-body">
+      <ul>
+        <li>Confirm diagnosis and classify diabetes</li>
+        <li>Evaluate complications, comorbidities, overall health status</li>
+        <li>Identify care partners and support system</li>
+        <li>Assess social determinants of health and structural barriers</li>
+        <li>Review previous treatment and risk-factor management</li>
+        <li>Develop a shared care management plan + continuing care plan</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card burgundy" onclick="toggleCard(this)">
+    <div class="card-head">Exercise and nutrition plan</div>
+    <div class="card-body">
+      <b>Exercise plan:</b>
+      <ul>
+        <li>≥150 min/week moderate-vigorous activity, over ≥3 days</li>
+        <li>No more than 2 consecutive days without activity</li>
+        <li>Resistance training 2–3 sessions/week, non-consecutive days</li>
+        <li>Flexibility/balance training 2–3 times/week for older adults</li>
+      </ul>
+      <b>Medical Nutrition Therapy (MNT):</b> individualized eating plan, developed with the patient; no single "ideal" macronutrient distribution fits everyone.
+    </div>
+  </div>
+
+  <div class="card burgundy" onclick="toggleCard(this)">
+    <div class="card-head">Obesity management by BMI</div>
+    <div class="card-body">
+      <table>
+        <tr><th>BMI (kg/m²)</th><th>Category</th><th>Recommended intervention</th></tr>
+        <tr><td>25.0–29.9</td><td>Overweight</td><td>Lifestyle ± medication</td></tr>
+        <tr><td>30.0–34.9</td><td>Obesity Class 1</td><td>Lifestyle + medication</td></tr>
+        <tr><td>35.0–39.9</td><td>Obesity Class 2</td><td>Lifestyle + medication + consider metabolic surgery</td></tr>
+        <tr><td>≥40</td><td>Obesity Class 3</td><td>All three, strong preference for metabolic surgery</td></tr>
+      </table>
+      <div class="note">Rec 8.6 (ADA 2024): individualized approach — behavioral, pharmacologic, or surgical, alone or combined.</div>
+    </div>
+  </div>
+
+  <div class="card burgundy" onclick="toggleCard(this)">
+    <div class="card-head">Efficacy of weight-loss medications</div>
+    <div class="card-body">
+      <table>
+        <tr><th>Efficacy</th><th>Agents</th></tr>
+        <tr><td><span class="pill green">Very High</span></td><td>Semaglutide, Tirzepatide</td></tr>
+        <tr><td><span class="pill orange">High</span></td><td>Dulaglutide, Liraglutide</td></tr>
+        <tr><td><span class="pill red">Intermediate</span></td><td>Other GLP-1RA, SGLT2i</td></tr>
+        <tr><td><span class="pill blue">Neutral</span></td><td>DPP-4i, Metformin</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card burgundy" onclick="toggleCard(this)">
+    <div class="card-head">💊 Pharmacologic algorithm (Figure 9.3, condensed)</div>
+    <div class="card-body">
+      <p><b>Metformin</b> + comprehensive lifestyle change = usual first line. Next step depends on clinical picture, <b>regardless of A1C</b>:</p>
+      <table>
+        <tr><th>Situation</th><th>Preferred agent</th></tr>
+        <tr><td>Established ASCVD or high risk</td><td>GLP-1 RA or SGLT2i with proven CV benefit</td></tr>
+        <tr><td>Heart failure (HF)</td><td>SGLT2i with proven benefit</td></tr>
+        <tr><td>Chronic kidney disease (CKD)</td><td>SGLT2i (or GLP-1 RA if not appropriate)</td></tr>
+        <tr><td>Need to minimize hypoglycemia</td><td>DPP-4i, GLP-1 RA, SGLT2i, TZD</td></tr>
+        <tr><td>Need to promote weight loss</td><td>GLP-1 RA and SGLT2i (dual GIP/GLP-1 preferred)</td></tr>
+        <tr><td>Cost is a major barrier</td><td>Sulfonylurea or TZD</td></tr>
+      </table>
+      <p><b>If injectable therapy is needed:</b> start with GLP-1 RA or dual GIP/GLP-1 RA before insulin in most cases. If still above target → add basal insulin, titrated by FPG. If further control needed → add prandial insulin stepwise, up to full basal-bolus.</p>
+      <div class="note">
+        Key ADA 2024 updates:<br>
+        • Rec 9.2: prefer insulin analogs or inhaled insulin over human insulin to reduce hypoglycemia in T1DM<br>
+        • Rec 9.14: importance of early combination therapy in T2DM<br>
+        • Rec 9.18: prefer agents reducing CV/kidney risk when ASCVD/HF/CKD present<br>
+        • Rec 9.23: dual GIP/GLP-1 RA preferred over insulin as an additional option<br>
+        • Rec 9.24: reassess insulin dose when adding/escalating GLP-1 RA or dual GIP/GLP-1 RA
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title gold">Comorbidities</div>
+
+  <div class="card gold" onclick="toggleCard(this)">
+    <div class="card-head">Hypertension</div>
+    <div class="card-body">
+      <div class="flag">🎯 Target: less than <b>130/80</b> if safely attainable.</div>
+      <p><b>Rec 10.6:</b> for BP &gt;120/80, lifestyle intervention includes: weight loss, DASH-style eating (less sodium, more potassium), alcohol moderation, smoking cessation, more physical activity.</p>
+    </div>
+  </div>
+
+  <div class="card gold" onclick="toggleCard(this)">
+    <div class="card-head">📋 Lipid management — primary prevention</div>
+    <div class="card-body">
+      <table>
+        <tr><th>Age</th><th>CV risk factors</th><th>Recommendation</th><th>LDL goal</th></tr>
+        <tr><td>40–75</td><td>None</td><td>Moderate-intensity statin</td><td>&lt;100 mg/dL</td></tr>
+        <tr><td>40–75</td><td>1 or more</td><td>High-intensity statin</td><td>&lt;70, or 50% reduction</td></tr>
+        <tr><td>20–39</td><td>Plus risk factors</td><td>Reasonable to initiate statin</td><td>—</td></tr>
+        <tr><td>&gt;75</td><td>None</td><td>Reasonable to initiate moderate-intensity statin</td><td>—</td></tr>
+        <tr><td>&gt;75</td><td>Plus risk factors</td><td>Continue therapy</td><td>—</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card gold" onclick="toggleCard(this)">
+    <div class="card-head">Lipid management — secondary prevention</div>
+    <div class="card-body">
+      <ul>
+        <li>Established <b>ASCVD</b> (any age) → <b>high-intensity statin</b> mandatory with lifestyle therapy</li>
+        <li><b>LDL goal &lt;55 mg/dL</b> — if not achieved, add <b>ezetimibe</b> or <b>PCSK9 inhibitor</b> (alirocumab, evolocumab)</li>
+        <li>ASCVD/risk factors + controlled LDL but elevated triglycerides (135–499) → consider <b>icosapent ethyl</b></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card gold" onclick="toggleCard(this)">
+    <div class="card-head">Aspirin and cardiovascular risk reduction</div>
+    <div class="card-body">
+      <ul>
+        <li><b>Secondary prevention:</b> aspirin for all patients with established ASCVD</li>
+        <li><b>Primary prevention:</b> consider in &gt;50 years with ≥1 high-risk factor (hypertension, dyslipidemia, smoking, family history, albuminuria)</li>
+      </ul>
+      <p><b>Pillars of CV risk reduction:</b> BP control, lipid goal achievement, aspirin use (as indicated), smoking avoidance, glucose-lowering agent with CV risk reduction.</p>
+    </div>
+  </div>
+
+  <div class="card gold" onclick="toggleCard(this)">
+    <div class="card-head">CKD and risk management</div>
+    <div class="card-body">
+      <ul>
+        <li><b>ACEI/ARB:</b> recommended in moderately increased albuminuria (30–299 mg/g cr), strongly in severe (&gt;300) and/or eGFR &lt;60</li>
+        <li><b>SGLT2i:</b> recommended in all DKD patients to reduce CKD progression and CV events, eGFR &gt;20 mL/min/1.73m², albuminuria &gt;200 mg/g; continue until dialysis/transplant</li>
+        <li><b>Finerenone:</b> used if eGFR &gt;25 and K+ &lt;5 mEq/L, with regular eGFR/K+ monitoring</li>
+      </ul>
+      <div class="note">⚠️ Verify exact dose/frequency against the current ADA source clinically — the original slide text was ambiguous.</div>
+    </div>
+  </div>
+
+  <div class="card gold" onclick="toggleCard(this)">
+    <div class="card-head">Diabetic neuropathy</div>
+    <div class="card-body">
+      <p><b>Rec 12.20:</b> first-line for neuropathic pain:</p>
+      <ul>
+        <li><b>Gabapentinoids</b></li>
+        <li><b>SNRIs:</b> duloxetine, venlafaxine</li>
+        <li><b>TCAs:</b> amitriptyline</li>
+        <li><b>Sodium channel blockers:</b> lamotrigine, lacosamide, oxcarbazepine, valproic acid</li>
+        <li><b>Capsaicin</b> — 8% patch, FDA approved</li>
+      </ul>
+      <div class="flag">⚠️ Carbamazepine is NOT approved for this use, despite being a sodium channel blocker — high-yield distinction!</div>
+      <p>Refer to neurology/pain specialist if control fails within the treating physician's scope.</p>
+    </div>
+  </div>
+
+  <div class="card gold" onclick="toggleCard(this)">
+    <div class="card-head">NAFLD / NASH</div>
+    <div class="card-body">
+      <ul>
+        <li>Hepatic fat &gt;5% = NAFLD</li>
+        <li><b>NASH:</b> steatosis + inflammation + hepatocyte injury ± fibrosis</li>
+      </ul>
+      <p><b>Assessment:</b></p>
+      <ul>
+        <li><b>FIB-4 score:</b> age, AST/SGOT, ALT/SGPT, platelet count</li>
+        <li><b>Fibroelastography (FibroScan)</b></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ PAGE 2: MCQ QUIZ ============ -->
+<div id="quiz" class="page">
+  <div class="section-title burgundy">Multiple-Choice Questions (OSCE-style)</div>
+  <div class="score-box" id="scoreBox">Score: 0 / 0</div>
+  <div class="quiz-controls">
+    <button onclick="resetQuiz()">Reset Quiz 🔄</button>
+  </div>
+  <div id="quizContainer"></div>
+</div>
+
+<div class="footer-note">Personal study reference — based on the lecture "Classification, Diagnosis and Management of Diabetes" and ADA Standards of Care 2023–2024. Always check the original source for clinical decisions.</div>
+
+<script>
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function toggleCard(el){
+  el.classList.toggle('open');
+  const body = el.querySelector('.card-body');
+  if(el.classList.contains('open')){
+    body.style.maxHeight = body.scrollHeight + 40 + 'px';
+  } else {
+    body.style.maxHeight = 0;
+  }
+}
+
+const questions = [
+{
+  q:"An asymptomatic patient has an A1C of 6.7% on a routine test. What is the correct next step per the standardized diagnostic approach?",
+  choices:["Diagnose diabetes immediately without further testing","Repeat the same test (A1C) for confirmation before finalizing the diagnosis","Wait 3 years and retest","Ignore the result since the patient is asymptomatic"],
+  correct:1,
+  explain:"Without unequivocal hyperglycemia (classic symptoms/crisis), diagnosis requires two abnormal results. Since only one test is available and it's above threshold, the same test should be repeated without delay for confirmation."
+},
+{
+  q:"Which of the following is no longer considered a classic symptom of hyperglycemia per current updates?",
+  choices:["Polyuria","Polydipsia","Polyphagia","Weight loss"],
+  correct:2,
+  explain:"Polyphagia (excessive hunger) is no longer classified among the classic triad of hyperglycemia symptoms; the current classic symptoms are polyuria, polydipsia, and weight loss."
+},
+{
+  q:"A 22-year-old woman has mild hyperglycemia, no obesity, and a strong multigenerational family history of early-onset diabetes. C-peptide is positive, autoantibodies are negative. What is the most likely diagnosis?",
+  choices:["Type 1 diabetes","MODY","Gestational diabetes","Classic Type 2 diabetes"],
+  correct:1,
+  explain:"MODY is characterized by early onset (typically before age 25), impaired insulin secretion with minimal defect in insulin action (without obesity), and autosomal dominant inheritance — consistent with positive C-peptide and negative autoantibodies."
+},
+{
+  q:"A patient with Type 2 diabetes has established heart failure. Which drug class is most appropriate to add regardless of A1C level?",
+  choices:["Sulfonylurea","DPP-4 inhibitor","SGLT2 inhibitor with proven benefit","TZD"],
+  correct:2,
+  explain:"When heart failure is present, ADA recommends an SGLT2i with proven benefit in heart failure regardless of A1C or metformin use, to reduce heart-failure hospitalization."
+},
+{
+  q:"A patient with T2DM and CKD (eGFR 45, urine albumin 250 mg/g) is on a maximally tolerated ACEI dose. Which drug should be added first to reduce kidney disease progression?",
+  choices:["Sulfonylurea","SGLT2 inhibitor","Pioglitazone","DPP-4 inhibitor"],
+  correct:1,
+  explain:"SGLT2i is recommended in all DKD patients (as long as eGFR ≥20) to reduce CKD progression and cardiovascular events, and is continued until dialysis or transplantation."
+},
+{
+  q:"A patient with established ASCVD has an LDL of 90 mg/dL despite high-intensity statin therapy. What is the target and next step?",
+  choices:["Target <100, no change needed","Target <70, add aspirin only","Target <55, add ezetimibe or a PCSK9 inhibitor","Stop the statin since the goal is close"],
+  correct:2,
+  explain:"In secondary prevention (established ASCVD), the LDL target is <55 mg/dL. If not achieved despite high-intensity statin, add ezetimibe or a PCSK9 inhibitor (alirocumab or evolocumab)."
+},
+{
+  q:"A patient with severe diabetic peripheral neuropathic pain was previously prescribed carbamazepine elsewhere. What is the correct clinical response?",
+  choices:["Carbamazepine is an approved first-line agent for this pain","Carbamazepine is not approved for diabetic neuropathic pain despite being a sodium channel blocker","It should only be used if TCAs fail","It is the best option for elderly patients"],
+  correct:1,
+  explain:"While sodium channel blockers (lamotrigine, lacosamide, oxcarbazepine, valproic acid) are recommended first-line agents, carbamazepine specifically is not approved for diabetic neuropathic pain."
+},
+{
+  q:"A 68-year-old man with prior stroke, insulin resistance, and prediabetes. Which drug may reduce the risk of recurrent stroke or MI based on IRIS trial data?",
+  choices:["Metformin","Pioglitazone","Sulfonylurea","Insulin glargine"],
+  correct:1,
+  explain:"IRIS trial data supports pioglitazone use to reduce risk of recurrent stroke and MI in patients with prior stroke, insulin resistance, and prediabetes, while weighing risks of weight gain, edema, and fracture."
+},
+{
+  q:"What is the current recommended blood pressure treatment target for most patients with diabetes, if safely achievable?",
+  choices:["Less than 140/90","Less than 130/80","Less than 120/70","Less than 150/90"],
+  correct:1,
+  explain:"The current treatment target is less than 130/80 mmHg if it can be safely attained, individualized to the patient."
+},
+{
+  q:"A 9-year-old girl has multiple positive islet autoantibodies, normal blood glucose, and no symptoms. Which stage of Type 1 diabetes does she have?",
+  choices:["Stage 1","Stage 2","Stage 3","Not classified as Type 1 diabetes"],
+  correct:0,
+  explain:"Stage 1 = multiple positive islet autoantibodies + normoglycemia + asymptomatic, without IGT or IFG — this matches the description exactly."
+},
+{
+  q:"A patient with Type 2 diabetes and obesity (BMI 37) needs a regimen serving both glycemic and weight goals. Which class offers the highest efficacy for both?",
+  choices:["DPP-4 inhibitors","Sulfonylureas","GLP-1 RA / dual GIP-GLP-1 agents (semaglutide, tirzepatide)","TZDs"],
+  correct:2,
+  explain:"GLP-1 RAs, especially dual GIP/GLP-1 receptor agonists (tirzepatide, semaglutide), have the highest efficacy for both glucose lowering and weight loss, and are preferred when both goals must be met."
+},
+{
+  q:"A woman with a history of GDM delivered 4 years ago and has not been screened since. What is the correct recommendation?",
+  choices:["No screening needed since she is not currently pregnant","One postpartum screening is sufficient for life","Lifelong screening at least every 3 years","Mandatory annual screening regardless of results"],
+  correct:2,
+  explain:"Women with a history of GDM require lifelong screening at least every 3 years, given their elevated risk of developing T2DM later."
+},
+{
+  q:"Which laboratory-based score, calculated from age, AST (SGOT), ALT (SGPT), and platelet count, is used to assess liver fibrosis severity in NAFLD/NASH?",
+  choices:["FIB-4 score","APRI score","Child-Pugh score","MELD score"],
+  correct:0,
+  explain:"The FIB-4 score is calculated from age, AST (SGOT), ALT (SGPT), and platelet count, and is used to estimate the likelihood of advanced fibrosis in NAFLD/NASH."
+},
+{
+  q:"A patient with Type 1 diabetes is currently on human insulin (Regular/NPH). Per ADA 2024 Rec 9.2, what is recommended?",
+  choices:["Continue human insulin since it's cheaper and adequate","Prefer insulin analogs or inhaled insulin to reduce hypoglycemia risk","Mandatory immediate switch to an insulin pump","No difference between human insulin and analogs"],
+  correct:1,
+  explain:"Updated Rec 9.2 prefers insulin analogs or inhaled insulin over regular human insulin for most adults with Type 1 diabetes, to reduce hypoglycemia risk."
+},
+{
+  q:"A patient with T2DM on metformin has A1C above target, with no ASCVD, HF, or CKD, but cost is a major barrier to therapy. Which agent is most appropriate to add?",
+  choices:["Expensive GLP-1 RA","SGLT2i","Sulfonylurea or TZD (lower-cost options)","PCSK9 inhibitor"],
+  correct:2,
+  explain:"When cost is a major barrier and there is no cardiac/renal indication mandating a specific agent, sulfonylurea or TZD represent effective, relatively lower-cost options."
+}
+];
+
+let userAnswers = new Array(questions.length).fill(null);
+
+function renderQuiz(){
+  const container = document.getElementById('quizContainer');
+  container.innerHTML = '';
+  questions.forEach((item, idx)=>{
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = `
+      <div class="q-num">Question ${idx+1} of ${questions.length}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="choices" id="choices-${idx}"></div>
+      <div class="explain" id="explain-${idx}"><b>Explanation:</b> ${item.explain}</div>
+    `;
+    container.appendChild(card);
+    const choicesDiv = card.querySelector(`#choices-${idx}`);
+    item.choices.forEach((choiceText, cIdx)=>{
+      const btn = document.createElement('button');
+      btn.className = 'choice';
+      btn.textContent = choiceText;
+      btn.onclick = ()=>selectAnswer(idx, cIdx);
+      choicesDiv.appendChild(btn);
+    });
+  });
+  updateScore();
+}
+
+function selectAnswer(qIdx, cIdx){
+  if(userAnswers[qIdx] !== null) return;
+  userAnswers[qIdx] = cIdx;
+  const choicesDiv = document.getElementById(`choices-${qIdx}`);
+  const buttons = choicesDiv.querySelectorAll('.choice');
+  buttons.forEach((b, i)=>{
+    b.classList.add('disabled');
+    if(i === questions[qIdx].correct) b.classList.add('correct');
+    else if(i === cIdx) b.classList.add('wrong');
+  });
+  document.getElementById(`explain-${qIdx}`).classList.add('show');
+  updateScore();
+}
+
+function updateScore(){
+  let answered = userAnswers.filter(a=>a!==null).length;
+  let correct = userAnswers.filter((a,i)=>a===questions[i].correct).length;
+  document.getElementById('scoreBox').textContent = `Score: ${correct} / ${answered} (out of ${questions.length} total)`;
+}
+
+function resetQuiz(){
+  userAnswers = new Array(questions.length).fill(null);
+  renderQuiz();
+}
+
+renderQuiz();
+</script>
+
+</body>
+</html>
